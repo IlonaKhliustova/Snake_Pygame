@@ -13,9 +13,10 @@ dirs = {'W': True, 'S': True, 'A': True, 'D': True, }
 score = 0
 speed_count, snake_speed = 0, 10
 pygame.init()
-surface = pygame.display.set_mode([RES, RES])
+sc = pygame.display.set_mode([RES, RES])
 clock = pygame.time.Clock()
 font_score = pygame.font.SysFont('Arial', 26, bold=True)
+font_ad = pygame.font.SysFont('Arial', 26, bold=True)
 font_end = pygame.font.SysFont('Arial', 66, bold=True)
 img = pygame.image.load('iimg.jpg').convert()
 
@@ -29,32 +30,37 @@ def close_game():
 
 
 while True:
-    surface.blit(img, (0, 0))
-    # drawing snake, apple
-    [pygame.draw.rect(surface, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
-    pygame.draw.rect(surface, pygame.Color('red'), (*apple, SIZE, SIZE))
-    # show score
+    sc.blit(img, (0, 0))
+
+    [pygame.draw.rect(sc, pygame.Color('green'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
+    pygame.draw.rect(sc, pygame.Color('red'), (*apple, SIZE, SIZE))
+
     render_score = font_score.render(f'SCORE: {score}', 1, pygame.Color('orange'))
-    surface.blit(render_score, (5, 5))
-    # snake movement
+    sc.blit(render_score, (5, 5))
+
     speed_count += 1
+
     if not speed_count % snake_speed:
         x += dx * SIZE
         y += dy * SIZE
         snake.append((x, y))
         snake = snake[-length:]
-    # eating food
+
     if snake[-1] == apple:
         apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
         length += 1
         score += 1
         snake_speed -= 1
         snake_speed = max(snake_speed, 4)
-    # game over
+
+    if score % 7 == 0:
+        render_ad = font_ad.render('Играйте в новую игру "Dungeon Master"', 1, pygame.Color('yellow'))
+        sc.blit(render_ad, (RES // 2 - 200, RES // 3))
+
     if x < 0 or x > RES - SIZE or y < 0 or y > RES - SIZE or len(snake) != len(set(snake)):
         while True:
             render_end = font_end.render('GAME OVER', 1, pygame.Color('yellow'))
-            surface.blit(render_end, (RES // 2 - 200, RES // 3))
+            sc.blit(render_end, (RES // 2 - 200, RES // 3))
             pygame.display.flip()
             close_game()
     pygame.display.flip()
