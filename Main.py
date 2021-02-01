@@ -1,7 +1,7 @@
 import pygame
 from random import randrange
 
-RES = 700
+RES = 665
 SIZE = 30
 x, y = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
 apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
@@ -52,11 +52,15 @@ while True:
         render_ad = font_ad.render('Играйте в новую игру "Dungeon Master"', 1, pygame.Color('yellow'))
         sc.blit(render_ad, (RES // 2 - 270, RES // 3))
 
+    if score % 9 == 0 and score != 0 and not score % 11 == 0:
+        render_ad = font_ad.render('Играйте в новую игру "VldTower"', 1, pygame.Color('yellow'))
+        sc.blit(render_ad, (RES // 2 - 270, RES // 3))
+
     if x < 0 or x > RES - SIZE or y < 0 or y > RES - SIZE or len(snake) != len(set(snake)):
         render_end = font_end.render('GAME OVER', 1, pygame.Color('yellow'))
         sc.blit(render_end, (RES // 2 - 200, RES // 3))
-        render_restart = font_ad.render('Press R to continue', 1, pygame.Color('yellow'))
-        sc.blit(render_restart, (RES // 2 - 200, RES // 2))
+        render_restart = font_ad.render('Press [R] to continue', 1, pygame.Color('yellow'))
+        sc.blit(render_restart, (RES // 3, RES // 2))
 
         dead = True
         snake_speed = 0
@@ -90,7 +94,8 @@ while True:
         x, y = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
         apple = randrange(SIZE, RES - SIZE, SIZE), randrange(SIZE, RES - SIZE, SIZE)
         score = 0
-        dirs = {'W': True, 'S': True, 'A': True, 'D': True, }
+        length = 1
+
         dx, dy = 0, 0
         snake_speed = 10
         dead = False
